@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
     Rigidbody2D rb2D;
     public GameObject pfBlob;
 
-    public PlayerContoller playerContoller;
+    public Pheromones pheromones;
 
 
     private void Start()
@@ -24,9 +24,9 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             rb2D.simulated = false;
-            Vector3 positionToSpawn = transform.position;
+            Vector3 positionToSpawn = this.transform.position;
             Debug.Log(positionToSpawn);
-            playerContoller.AddBlobToList(positionToSpawn);
+            pheromones.AddBlobToList(positionToSpawn);
             Destroy(gameObject);
         }
     }
