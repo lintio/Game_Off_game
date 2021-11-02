@@ -4,12 +4,29 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public GameObject pheromoneBlob;
+    Rigidbody2D rb2D;
+    public GameObject pfBlob;
+
+    public PlayerContoller playerContoller;
+
+
+    private void Start()
+    {
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
+    }
     private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
-            Instantiate(pheromoneBlob, transform);
+            rb2D.simulated = false;
+            Vector3 positionToSpawn = transform.position;
+            Debug.Log(positionToSpawn);
+            playerContoller.AddBlobToList(positionToSpawn);
             Destroy(gameObject);
         }
     }
