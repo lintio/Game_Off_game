@@ -36,11 +36,13 @@ public class LineController : MonoBehaviour
 
     public float GetWidth()
     {
-        return 0;
+        return lr.startWidth;
     }
 
     public Vector3[] GetPositions()
     {
-        return null;
+        Vector3[] positions = new Vector3[lr.positionCount];
+        lr.GetPositions(positions);
+        return positions;
     }
 }
