@@ -14,10 +14,6 @@ public class Bullet : MonoBehaviour
     {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -25,7 +21,6 @@ public class Bullet : MonoBehaviour
         {
             rb2D.simulated = false;
             Vector3 positionToSpawn = this.transform.position;
-            Debug.Log(positionToSpawn);
             pheromones.AddBlobToList(positionToSpawn);
             Destroy(gameObject);
         }

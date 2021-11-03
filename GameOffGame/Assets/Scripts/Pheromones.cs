@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,30 +11,57 @@ public class Pheromones : MonoBehaviour
 
     Camera mainCam;
 
-    Vector3 handPos;
     private float throwForce;
+
+    Vector2 direction;
+    public GameObject pfAimPathPoint;
+    public GameObject[] aimPathPoints;
+    public int aimPathPointCount;
 
     public List<GameObject> blobs = new List<GameObject>();
 
+
+
     private void Start()
     {
-        mainCam = Camera.main;
+        aimPathPoints = new GameObject[aimPathPointCount];
 
-        throwForce = 5f;
+        for (int i = 0; i < aimPathPointCount; i++)
+        {
+            aimPathPoints[i] = Instantiate(pfAimPathPoint, transform.position, Quaternion.identity);
+        }
+
+        mainCam = Camera.main;
+        throwForce = 20f;
     }
 
     private void Update()
     {
+        direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
         if (Input.GetMouseButtonDown(0))
         {
-            ThrowVile((mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized);
+            ThrowVile();
+        }
+        if (Input.GetButtonDown("Jump"))
+        {
+            lineController.RemoveLine();
+            for (int i = 0; i < blobs.Count; i++)
+            {
+                Destroy(blobs[i]);
+            }
+            blobs.Clear();
+        }
+
+        for (int i = 0; i < aimPathPoints.Length; i++)
+        {
+            aimPathPoints[i].transform.position = PointPosition(i * 0.1f);
         }
     }
 
-    void ThrowVile(Vector3 throwDir)
+    void ThrowVile()
     {
-        GameObject vile = Instantiate(pfVile, transform.position, Quaternion.identity);
-        vile.GetComponent<Rigidbody2D>().AddForce(throwDir * throwForce, ForceMode2D.Impulse);
+        GameObject vile = Instantiate(pfVile, transform.position, transform.rotation);
+        vile.GetComponent<Rigidbody2D>().velocity = transform.right * throwForce;
         vile.GetComponent<Bullet>().pheromones = this;
     }
 
@@ -45,11 +73,16 @@ public class Pheromones : MonoBehaviour
         {
             Destroy(blobs[0]);
             blobs.RemoveAt(0);
+            lineController.SetPoints(blobs);
         }
         if (blobs.Count >= 2)
         {
             lineController.SetPoints(blobs);
         }
-        Debug.Log(blobs);
+    }
+
+    Vector2 PointPosition(float t)
+    {
+        return (Vector2)transform.position + (direction * throwForce * t) + 0.5f * Physics2D.gravity * (t * t);
     }
 }

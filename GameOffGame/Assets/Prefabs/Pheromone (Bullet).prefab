@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4043389465027121208}
   - component: {fileID: 356100490422329887}
-  - component: {fileID: 4922656499950109483}
   - component: {fileID: 9173734287738249691}
   - component: {fileID: 5182918717259986764}
+  - component: {fileID: 5383051184707788084}
   m_Layer: 0
   m_Name: Pheromone (Bullet)
   m_TagString: Untagged
@@ -85,27 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &4922656499950109483
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6403678224886772943}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.2
-  m_LinearDrag: 0
-  m_AngularDrag: 1
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 1
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 0
 --- !u!58 &9173734287738249691
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -121,7 +100,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.15
 --- !u!114 &5182918717259986764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,4 +114,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pfBlob: {fileID: 6403678224886772943, guid: d828a1fb4ef523a46a955b7b0c807806, type: 3}
-  playerContoller: {fileID: 0}
+  pheromones: {fileID: 0}
+--- !u!50 &5383051184707788084
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6403678224886772943}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
