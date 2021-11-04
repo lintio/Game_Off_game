@@ -242,10 +242,10 @@ GameObject:
   m_Component:
   - component: {fileID: 92419665}
   - component: {fileID: 92419664}
-  - component: {fileID: 92419663}
   - component: {fileID: 92419667}
   - component: {fileID: 92419668}
   - component: {fileID: 92419666}
+  - component: {fileID: 92419663}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -253,27 +253,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &92419663
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &92419663
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 92419662}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 10
-  m_LinearDrag: 5
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 1
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3351e9d2f6ce9042a1eabd31a04a4a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2.5
+  jumpForce: 5
 --- !u!212 &92419664
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -340,18 +333,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &92419666
-MonoBehaviour:
+--- !u!50 &92419666
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 92419662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3351e9d2f6ce9042a1eabd31a04a4a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!70 &92419667
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -760,7 +762,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 527141520}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: cb058031ba521c94eac8977634d86337, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1324,9 +1326,10 @@ MonoBehaviour:
   pfVile: {fileID: 6403678224886772943, guid: 1b8916fe49dee3c4c85c09d404d13460, type: 3}
   pfLinePoint: {fileID: 6403678224886772943, guid: d828a1fb4ef523a46a955b7b0c807806, type: 3}
   lineController: {fileID: 527141521}
+  throwForce: 15
+  aimPointTimeOffset: 0.1
+  aimPathPointCount: 10
   pfAimPathPoint: {fileID: 1103486293887697622, guid: 1144eabf1ea60e1439e8901eb6c1874c, type: 3}
-  aimPathPoints: []
-  aimPathPointCount: 20
   blobs: []
 --- !u!114 &1918529129
 MonoBehaviour:
