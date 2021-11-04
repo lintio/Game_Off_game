@@ -11,12 +11,14 @@ public class Pheromones : MonoBehaviour
 
     Camera mainCam;
 
-    private float throwForce;
+    public float throwForce;
 
+    public float aimPointTimeOffset;
+
+    public int aimPathPointCount;
     Vector2 direction;
     public GameObject pfAimPathPoint;
-    public GameObject[] aimPathPoints;
-    public int aimPathPointCount;
+    GameObject[] aimPathPoints;
 
     public List<GameObject> blobs = new List<GameObject>();
 
@@ -32,17 +34,23 @@ public class Pheromones : MonoBehaviour
         }
 
         mainCam = Camera.main;
-        throwForce = 20f;
     }
 
     private void Update()
     {
+        Vector2 MousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 firePoint = transform.position;
+
+        direction = MousePos - firePoint;
+
+        faceMouse();
+
         direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
         if (Input.GetMouseButtonDown(0))
         {
             ThrowVile();
         }
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             lineController.RemoveLine();
             for (int i = 0; i < blobs.Count; i++)
@@ -52,10 +60,30 @@ public class Pheromones : MonoBehaviour
             blobs.Clear();
         }
 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            for (int i = 0; i < aimPathPoints.Length; i++)
+            {
+                aimPathPoints[i].SetActive(true);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < aimPathPoints.Length; i++)
+            {
+                aimPathPoints[i].SetActive(false);
+            }
+        }
         for (int i = 0; i < aimPathPoints.Length; i++)
         {
-            aimPathPoints[i].transform.position = PointPosition(i * 0.1f);
+            aimPathPoints[i].transform.position = PointPosition(i * aimPointTimeOffset);
         }
+
+    }
+
+    private void faceMouse()
+    {
+        transform.right = direction;
     }
 
     void ThrowVile()
@@ -83,6 +111,8 @@ public class Pheromones : MonoBehaviour
 
     Vector2 PointPosition(float t)
     {
-        return (Vector2)transform.position + (direction * throwForce * t) + 0.5f * Physics2D.gravity * (t * t);
+        
+        Vector2 currentPointPos = (Vector2)transform.position + (direction.normalized * throwForce * t) + 0.5f * Physics2D.gravity * (t * t);
+        return currentPointPos;
     }
 }
