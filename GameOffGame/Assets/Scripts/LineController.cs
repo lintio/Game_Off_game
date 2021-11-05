@@ -6,21 +6,21 @@ using UnityEngine;
 public class LineController : MonoBehaviour
 {
     private LineRenderer lr;
-    [SerializeField] private List<Vector3> points = new List<Vector3>();
+    private List<Vector3> points = new List<Vector3>();
 
     [SerializeField] Transform pointATransform;
     [SerializeField] Transform pointBTransform;
 
-    public Vector3 pointA;
-    public Vector3 pointB;
-    public Vector3 pointT;
+    private Vector3 pointA;
+    private Vector3 pointB;
+    private Vector3 pointT;
 
-    public bool lineActive;
+    private bool lineActive;
 
     float speed = 10f;
 
-    public bool doExtend;
-    public bool doRetract;
+    private bool doExtend;
+    private bool doRetract;
 
     private void Start()
     {
@@ -38,23 +38,18 @@ public class LineController : MonoBehaviour
         {
             if (!doRetract)
             {
-                Debug.Log("Extending");
                 pointB = Vector3.MoveTowards(pointB, pointT, speed * Time.deltaTime);
                 if (pointB == pointT)
                 {
-                    Debug.Log("Done Extending");
                     doExtend = false;
                 }
             }
         }
         if (doRetract)
         {
-
-                Debug.Log("Retracting");
                 pointA = Vector3.MoveTowards(pointA, pointB, speed * Time.deltaTime);
                 if (pointA == pointB)
                 {
-                    Debug.Log("Done Retracting");
                     doRetract = false;
                 }
         }
@@ -104,19 +99,5 @@ public class LineController : MonoBehaviour
         Vector3[] positions = new Vector3[lr.positionCount];
         lr.GetPositions(positions);
         return positions;
-    }
-
-    void Extend()
-    {
-        pointBTransform.position = Vector3.MoveTowards(pointA, pointB, speed * Time.deltaTime);
-        if (pointBTransform.position == pointB)
-            doExtend = false;
-    }
-
-    void Retract()
-    {
-        pointATransform.position = Vector3.MoveTowards(pointA, pointB, speed * Time.deltaTime);
-        if (pointATransform.position == pointB)
-            doRetract = false;
     }
 }
