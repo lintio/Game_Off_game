@@ -7,7 +7,8 @@ public class Pheromones : MonoBehaviour
 {
     [SerializeField] private GameObject pfVile;
     [SerializeField] private GameObject pfLinePoint;
-    [SerializeField] private LineController lineController;
+    //[SerializeField] private LineController lineController;
+    [SerializeField] private BridgeController bridgeController;
 
     Camera mainCam;
 
@@ -21,6 +22,7 @@ public class Pheromones : MonoBehaviour
     GameObject[] aimPathPoints;
 
     public List<GameObject> blobs = new List<GameObject>();
+    List<Vector3> BlobPos = new List<Vector3>();
 
 
 
@@ -41,21 +43,21 @@ public class Pheromones : MonoBehaviour
         Vector2 MousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 firePoint = transform.position;
 
-        direction = MousePos - firePoint;
+        direction = (MousePos - firePoint).normalized;
 
         faceMouse();
 
-        direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        //direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
         if (Input.GetMouseButtonDown(0))
         {
             ThrowVile();
         }
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            lineController.RemoveLine();
             for (int i = 0; i < blobs.Count; i++)
             {
                 Destroy(blobs[i]);
+                bridgeController.KillAnts();
             }
             blobs.Clear();
         }
@@ -95,17 +97,22 @@ public class Pheromones : MonoBehaviour
 
     public void AddBlobToList(Vector3 positionToSpawn)
     {
+        
         GameObject blob = (GameObject)Instantiate(pfLinePoint, positionToSpawn + new Vector3(0, 0, 1), Quaternion.identity);
         blobs.Add(blob);
+        //BlobPos.Add(blob.transform.position);
         if (blobs.Count >= 3)
         {
             Destroy(blobs[0]);
             blobs.RemoveAt(0);
-            lineController.SetPoints(blobs);
+            //BlobPos.RemoveAt(0);
+            //bridgeController.SetBridgePoints(BlobPos);
+            bridgeController.SetBridgePoints(blobs);
         }
         if (blobs.Count >= 2)
         {
-            lineController.SetPoints(blobs);
+            //bridgeController.SetBridgePoints(BlobPos);
+            bridgeController.SetBridgePoints(blobs);
         }
     }
 

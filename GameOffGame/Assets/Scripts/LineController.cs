@@ -18,9 +18,12 @@ public class LineController : MonoBehaviour
     private bool lineActive;
 
     float speed = 10f;
+    public float lineLife;
+    float lineCountdown;
 
     private bool doExtend;
     private bool doRetract;
+    private bool lineExtended;
 
     private void Start()
     {
@@ -28,10 +31,19 @@ public class LineController : MonoBehaviour
         lr.positionCount = 2;
         pointA = new Vector3(0, 0, 0);
         pointB = new Vector3(0, 0, 0);
+        
     }
 
     private void Update()
     {
+        if (lineExtended)
+        {
+            lineCountdown -= Time.deltaTime;
+            if (lineCountdown <= 0)
+            {
+                RemoveLine();
+            }
+        }
         pointATransform.position = pointA;
         pointBTransform.position = pointB;
         if (doExtend)
@@ -42,6 +54,7 @@ public class LineController : MonoBehaviour
                 if (pointB == pointT)
                 {
                     doExtend = false;
+                    lineExtended = true;
                 }
             }
         }
@@ -51,6 +64,7 @@ public class LineController : MonoBehaviour
                 if (pointA == pointB)
                 {
                     doRetract = false;
+                    lineExtended = false;
                 }
         }
             lr.SetPosition(0, pointA);
@@ -62,6 +76,7 @@ public class LineController : MonoBehaviour
         doRetract = true;
         lineActive = false;
         points.Clear();
+        lineExtended = false;
     }
 
     public void SetPoints(List<GameObject> blobs)
@@ -87,6 +102,7 @@ public class LineController : MonoBehaviour
             pointT = points[1];
             doExtend = true;
         }
+        lineCountdown = lineLife;
     }
 
     public float GetWidth()
