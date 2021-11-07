@@ -35,16 +35,27 @@ public class AntController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isActive) {
-            if (transform.position == targetPoint) {
-                if (!dieOnNextTarget) {
+        if (isActive)
+        {
+            if (!dieOnNextTarget)
+            {
+                if (transform.position == targetPoint)
+                {
                     swapTargets();
                 }
-                else {
+            }
+            else
+            {
+                if (targetPoint != bridgePointA)
+                {
+                    targetPoint = bridgePointA;
+                }
+                else if (transform.position == targetPoint)
+                {
                     Destroy(gameObject);
                 }
             }
-            transform.position = Vector3.MoveTowards(transform.position, targetPoint, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetPoint, speed * Time.deltaTime);
         }
     }
 

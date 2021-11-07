@@ -93,6 +93,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -688,6 +689,30 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Basic Tile Sheet_9: 9027026076138664374
+      Basic Tile Sheet_6: 891453872750822096
+      Basic Tile Sheet_18: -6762151927532256301
+      Basic Tile Sheet_4: -5377501302629299159
+      Basic Tile Sheet_12: 2488563623052893364
+      Basic Tile Sheet_10: 7484483072303545832
+      Basic Tile Sheet_17: 6558228868336439666
+      Basic Tile Sheet_7: -254257508040096762
+      Basic Tile Sheet_14: -8550192519468478946
+      Basic Tile Sheet_22: -2401118973870418495
+      Basic Tile Sheet_13: -1160287195908302989
+      Basic Tile Sheet_19: -4113923342299035594
+      Basic Tile Sheet_21: -5334896462299486580
+      Basic Tile Sheet_20: 8599560516294611221
+      Basic Tile Sheet_2: -1942463818698330052
+      Basic Tile Sheet_5: 3622954096669524730
+      Basic Tile Sheet_0: 7793124894752281027
+      Basic Tile Sheet_1: 4755142080558428725
+      Basic Tile Sheet_3: -5142890076853616632
+      Basic Tile Sheet_11: 6518313118203872157
+      Basic Tile Sheet_8: 6209894890908511290
+      Basic Tile Sheet_16: 3146681953369272642
+      Basic Tile Sheet_15: 5464756506955794698
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
