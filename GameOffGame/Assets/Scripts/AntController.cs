@@ -7,53 +7,38 @@ using Random = UnityEngine.Random;
 
 public class AntController : MonoBehaviour
 {
-    Vector3 bridgePointA;
-    Vector3 bridgePointB;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private List<Color> antColor = new List<Color>();
+    [SerializeField] private float speed = 0.5f;
 
-    public SpriteRenderer sr;
-
-    public List<Color> antColor = new List<Color>();
-
-    Vector3 targetPoint;
-
-    Vector3 direction;
-
-    float speed = 0.5f;
-
-    bool isActive;
+    private bool isActive;
+    private Vector3 bridgePointA;
+    private Vector3 bridgePointB;
+    private Vector3 targetPoint;
+    private Vector3 direction;
 
     public bool dieOnNextTarget = false;
 
-    // Start is called before the first frame update
-
     [Obsolete]
-    void Start()
+    void Awake()
     {
-        sr.GetComponent<SpriteRenderer>().color = antColor[index: Random.RandomRange(0,5)];
+        _spriteRenderer.color = antColor[index: Random.RandomRange(0,5)];
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isActive)
-        {
-            if (!dieOnNextTarget)
-            {
-                if (transform.position == targetPoint)
-                {
+        if (isActive) {
+            if (!dieOnNextTarget) {
+                if (transform.position == targetPoint) {
                     swapTargets();
                 }
             }
-            else
-            {
+            else {
                 if (targetPoint != bridgePointA)
-                {
                     targetPoint = bridgePointA;
-                }
                 else if (transform.position == targetPoint)
-                {
                     Destroy(gameObject);
-                }
             }
         transform.position = Vector3.MoveTowards(transform.position, targetPoint, speed * Time.deltaTime);
         }
@@ -61,12 +46,10 @@ public class AntController : MonoBehaviour
 
     private void swapTargets()
     {
-            if (targetPoint == bridgePointA) {
+            if (targetPoint == bridgePointA)
                 targetPoint = bridgePointB;
-            }
-            else {
+            else
                 targetPoint = bridgePointA;
-            }
     }
 
     public void SetTargets(Vector3 bridgePointA, Vector3 bridgePointB, Vector3 direction)

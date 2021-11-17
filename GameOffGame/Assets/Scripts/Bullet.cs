@@ -1,14 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    Rigidbody2D rb2D;
-    public GameObject pfBlob;
-
-    public Pheromones pheromones;
-
+    private Rigidbody2D rb2D;
+    public event Action<Vector3> PointCollected;
 
     private void Start()
     {
@@ -17,11 +15,12 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.CompareTag("Ground"))
         {
             rb2D.simulated = false;
             Vector3 positionToSpawn = this.transform.position;
-            pheromones.AddBlobToList(positionToSpawn);
+            PointCollected?.Invoke(positionToSpawn);
+
             Destroy(gameObject);
         }
     }

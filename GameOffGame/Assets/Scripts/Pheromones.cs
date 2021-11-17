@@ -7,7 +7,6 @@ public class Pheromones : MonoBehaviour
 {
     [SerializeField] private GameObject pfVile;
     [SerializeField] private GameObject pfLinePoint;
-    //[SerializeField] private LineController lineController;
     [SerializeField] private BridgeController bridgeController;
 
     Camera mainCam;
@@ -47,7 +46,6 @@ public class Pheromones : MonoBehaviour
 
         faceMouse();
 
-        //direction = (mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
         if (Input.GetMouseButtonDown(0))
         {
             ThrowVile();
@@ -92,7 +90,7 @@ public class Pheromones : MonoBehaviour
     {
         GameObject vile = Instantiate(pfVile, transform.position, transform.rotation);
         vile.GetComponent<Rigidbody2D>().velocity = transform.right * throwForce;
-        vile.GetComponent<Bullet>().pheromones = this;
+        vile.GetComponent<Bullet>().PointCollected += AddBlobToList;
     }
 
     public void AddBlobToList(Vector3 positionToSpawn)
@@ -100,25 +98,20 @@ public class Pheromones : MonoBehaviour
         
         GameObject blob = (GameObject)Instantiate(pfLinePoint, positionToSpawn + new Vector3(0, 0, 1), Quaternion.identity);
         blobs.Add(blob);
-        //BlobPos.Add(blob.transform.position);
         if (blobs.Count >= 3)
         {
             Destroy(blobs[0]);
             blobs.RemoveAt(0);
-            //BlobPos.RemoveAt(0);
-            //bridgeController.SetBridgePoints(BlobPos);
             bridgeController.SetBridgePoints(blobs);
         }
         if (blobs.Count >= 2)
         {
-            //bridgeController.SetBridgePoints(BlobPos);
             bridgeController.SetBridgePoints(blobs);
         }
     }
 
     Vector2 PointPosition(float t)
     {
-        
         Vector2 currentPointPos = (Vector2)transform.position + (direction.normalized * throwForce * t) + 0.5f * Physics2D.gravity * (t * t);
         return currentPointPos;
     }
