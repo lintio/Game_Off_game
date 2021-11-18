@@ -47,7 +47,7 @@ public class BridgeController : MonoBehaviour
     }
 
     void Update() {
-        _antCountText.text = "Ants in your pants: " + _totalAntCount.ToString();
+        //_antCountText.text = "Ants in your pants: " + _totalAntCount.ToString();
         _bridgeMaxLenght = (_antWidth * _totalAntCount);
         _activeAntCount = _antCollection.transform.childCount;
         if (_isBridgeActive) {

@@ -40,7 +40,7 @@ public class PlayerContoller : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _boxCollider = GetComponent<BoxCollider2D>();
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
         baseLocalScale = transform.localScale;
     }
 
