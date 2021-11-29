@@ -5,114 +5,69 @@ using UnityEngine;
 
 public class Pheromones : MonoBehaviour
 {
+    [Header("Prefabs")]
     [SerializeField] private GameObject pfVile;
-    [SerializeField] private GameObject pfLinePoint;
+
+    [Header("Links to other scripts")]
+    AntSystem redAntSystem;
     [SerializeField] private BridgeController bridgeController;
+    [SerializeField] private Trajectory_Line trajectoryLine;
 
-    Camera mainCam;
+    [Header("Throw Stats")]
+    [SerializeField] private bool _useThrowForceRamp;
+    [SerializeField] private float _MaxThrowForce;
+    [SerializeField] private float _MinThrowForce;
+    [SerializeField] private float _ThrowForceGenerateSpeed;
+    private float throwForce;
 
-    public float throwForce;
+    [Header("EventsHandlers")]
+    [SerializeField] Collectables _collectables;
 
-    public float aimPointTimeOffset;
-
-    public int aimPathPointCount;
-    Vector2 direction;
-    public GameObject pfAimPathPoint;
-    GameObject[] aimPathPoints;
-
-    public List<GameObject> blobs = new List<GameObject>();
-    List<Vector3> BlobPos = new List<Vector3>();
-
-
-
-    private void Start()
+    private void Awake()
     {
-        aimPathPoints = new GameObject[aimPathPointCount];
-
-        for (int i = 0; i < aimPathPointCount; i++)
-        {
-            aimPathPoints[i] = Instantiate(pfAimPathPoint, transform.position, Quaternion.identity);
-        }
-
-        mainCam = Camera.main;
+        redAntSystem = new AntSystem(0);
+        _collectables.AddRedAnt += AddAnts;
     }
 
     private void Update()
     {
-        Vector2 MousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 firePoint = transform.position;
-
-        direction = (MousePos - firePoint).normalized;
-
-        faceMouse();
-
-        if (Input.GetMouseButtonDown(0))
+        if (_useThrowForceRamp)
         {
-            ThrowVile();
-        }
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            for (int i = 0; i < blobs.Count; i++)
+            if (Input.GetMouseButton(1))
             {
-                Destroy(blobs[i]);
-                bridgeController.KillAnts();
+                throwForce += Time.deltaTime * _ThrowForceGenerateSpeed;
+                Mathf.Clamp(throwForce, _MinThrowForce, _MaxThrowForce);
+                trajectoryLine.GetThrowForce(throwForce);
             }
-            blobs.Clear();
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            for (int i = 0; i < aimPathPoints.Length; i++)
+            if (Input.GetMouseButtonUp(1))
             {
-                aimPathPoints[i].SetActive(true);
+                throwForce = _MinThrowForce;
             }
         }
         else
         {
-            for (int i = 0; i < aimPathPoints.Length; i++)
-            {
-                aimPathPoints[i].SetActive(false);
-            }
+            throwForce = _MaxThrowForce;
+            trajectoryLine.GetThrowForce(throwForce);
         }
-        for (int i = 0; i < aimPathPoints.Length; i++)
+        
+        if (Input.GetMouseButtonDown(0))
         {
-            aimPathPoints[i].transform.position = PointPosition(i * aimPointTimeOffset);
+            ThrowVile();
+            throwForce = _MinThrowForce;
         }
-
-    }
-
-    private void faceMouse()
-    {
-        transform.right = direction;
     }
 
     void ThrowVile()
     {
         GameObject vile = Instantiate(pfVile, transform.position, transform.rotation);
         vile.GetComponent<Rigidbody2D>().velocity = transform.right * throwForce;
-        vile.GetComponent<Bullet>().PointCollected += AddBlobToList;
+        Bullet bullet = vile.GetComponent<Bullet>();
+        bullet.SetDamageAmount(redAntSystem.GetAntCount());
+        bullet.PointCollected += bridgeController.AddBlobToList;
     }
 
-    public void AddBlobToList(Vector3 positionToSpawn)
+    public void AddAnts(int _newAnts)
     {
-        
-        GameObject blob = (GameObject)Instantiate(pfLinePoint, positionToSpawn + new Vector3(0, 0, 1), Quaternion.identity);
-        blobs.Add(blob);
-        if (blobs.Count >= 3)
-        {
-            Destroy(blobs[0]);
-            blobs.RemoveAt(0);
-            bridgeController.SetBridgePoints(blobs);
-        }
-        if (blobs.Count >= 2)
-        {
-            bridgeController.SetBridgePoints(blobs);
-        }
-    }
-
-    Vector2 PointPosition(float t)
-    {
-        Vector2 currentPointPos = (Vector2)transform.position + (direction.normalized * throwForce * t) + 0.5f * Physics2D.gravity * (t * t);
-        return currentPointPos;
+        redAntSystem.IncreaseAntCountMax(_newAnts);
     }
 }

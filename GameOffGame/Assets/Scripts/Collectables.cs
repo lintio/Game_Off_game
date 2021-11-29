@@ -7,7 +7,9 @@ public class Collectables : MonoBehaviour
 {
     [SerializeField] private List<Collectable> _levelCollectables = new List<Collectable>();
 
-    public event Action<int> AddAnt;
+    public event Action<int> AddBlackAnt;
+    public event Action<int> AddRedAnt;
+
 
     private void Awake()
     {
@@ -27,6 +29,7 @@ public class Collectables : MonoBehaviour
 
     private void Collectable_onPickUp(Collectable obj)
     {
-        AddAnt?.Invoke(obj.antValue);
+        AddBlackAnt?.Invoke(obj.antBlackValue);
+        AddRedAnt?.Invoke(obj.antRedValue);
     }
 }
